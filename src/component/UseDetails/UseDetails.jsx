@@ -28,11 +28,10 @@ function UseDetails(){
     }
 
 
-
     return(
         <>
             <h1 style={{textAlign:"center"}}>User Details</h1>
-            <form class="row g-3" onSubmit={handleSubmit} style={{width:700,margin:'0 auto',marginTop:50,background:'gray',padding:20}}>
+            <form class="row g-3" onSubmit={handleSubmit} style={{width:700,margin:'0 auto',marginTop:50,background:'gray',padding:20,  borderRadius:20}}>
                 <div class="col-md-6">
                     <label  class="form-label">Fname</label>
                     <input type="text" class="form-control" name="fname" value={data.fname} onChange={handleChange} ></input>
@@ -58,37 +57,37 @@ function UseDetails(){
                     <input type="text" class="form-control" name="phone" value={data.phone} onChange={handleChange}></input>
                 </div>
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Sign in</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
 
             {
                 Show != null ?
-                <>
+                <div style={{width:700,margin:'0 auto',marginTop:50,background:'green',padding:20}}>
                     <h2>
                         {
-                            Show.fname + " " + Show.lname
+                           "Name :-  " + Show.fname + " " + Show.lname
                         }
                     </h2>
                     <h2>
                         {
-                            Show.email
+                          "Email :-  " + Show.email
                         }
                     </h2>
                     <h2>
                         {
-                            Show.address
+                           "Adderss :-  " + Show.address
                         }
                     </h2>
                     <h2>
                         {
-                            Show.phone
+                           "Phone :-  " + Show.phone
                         }
                     </h2>
-                </>
+                </div>
                    :
-                    <h2>
-                        not found
+                    <h2 style={{width:700,margin:'0 auto',marginTop:50,background:'red',padding:20}}>
+                       Details not found
                     </h2>
             }   
         </>
