@@ -1,4 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+
+
+const getData = ()=>{
+   let getdata = JSON.parse(localStorage.getItem("data"));
+
+    if(getdata != null){
+        return getdata;
+    }
+    return [];
+}
 
 function CommentSection() {
 
@@ -8,7 +18,7 @@ function CommentSection() {
         cname: ''
     });
 
-    const [viewData, setviewData] = useState([]);
+    const [viewData, setviewData] = useState(getData());
 
     const handlechange = (e) => {
         let name = e.target.name;
@@ -17,7 +27,7 @@ function CommentSection() {
         setinputList({ ...inputList, [name]: value })
         // console.log("name",name);
     }
-    const hndleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         // console.log("click");
 
@@ -31,14 +41,20 @@ function CommentSection() {
             cname: ''
         });
 
+        
     }
+    useEffect(()=>{
+        localStorage.setItem("data",JSON.stringify(viewData));
+        console.log("hello");
+    },[viewData])
+    
     return (
         <>
             <div className='container'>
                 <h1>
                     CommentSection
                 </h1>
-                <form className="row g-3" onSubmit={hndleSubmit}>
+                <form className="row g-3" onSubmit={handleSubmit}>
                     <div className='col-md-6'>
                         <label className="form-label">First Name</label>
                         <input type="text" className="form-control" name='fname' value={inputList.fname} onChange={handlechange} />
