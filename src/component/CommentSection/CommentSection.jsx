@@ -2,25 +2,25 @@ import React, { useEffect, useState } from 'react'
 
             // localStorage
 
-    const getData = ()=>{
-    let getdata = JSON.parse(localStorage.getItem("data"));
+//     const getData = ()=>{
+//     let getdata = JSON.parse(localStorage.getItem("data"));
 
-    if(getdata != null){
-        return getdata;
-    }
-    return [];
-}
+//     if(getdata != null){
+//         return getdata;
+//     }
+//     return [];
+// }
 
                     // sessionStorage
 
-//     const getData = ()=>{
-//     let getdata = JSON.parse(sessionStorage.getItem("data"));
+    const getData = ()=>{
+    let getdata = JSON.parse(sessionStorage.getItem("data"));
  
-//      if(getdata != null){
-//          return getdata;
-//      }
-//      return [];
-//  }
+     if(getdata != null){
+         return getdata;
+     }
+     return [];
+ }
 
 function CommentSection() {
 
@@ -58,15 +58,17 @@ function CommentSection() {
 
             // localStorage 
 
-    useEffect(()=>{
-        localStorage.setItem("data",JSON.stringify(viewData));
-        console.log("hello");
-    },[viewData])
-
     // useEffect(()=>{
-    //     sessionStorage.setItem("data",JSON.stringify(viewData));
+    //     localStorage.setItem("data",JSON.stringify(viewData));
     //     console.log("hello");
     // },[viewData])
+
+            // sessionStorage
+
+    useEffect(()=>{
+        sessionStorage.setItem("data",JSON.stringify(viewData));
+        console.log("hello");
+    },[viewData])
     
     return (
         <>
