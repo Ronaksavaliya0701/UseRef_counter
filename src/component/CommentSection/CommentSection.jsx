@@ -1,138 +1,185 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react"
 
-            // localStorage
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-//     const getData = ()=>{
-//     let getdata = JSON.parse(localStorage.getItem("data"));
+function getItem() {
+    let info = JSON.parse(localStorage.getItem("user"));
 
-//     if(getdata != null){
-//         return getdata;
-//     }
-//     return [];
-// }
+    if (info != null) {
+        return info;
+    }
+    else {
+        return [];
+    }
+}
 
-                    // sessionStorage
 
-    const getData = ()=>{
-    let getdata = JSON.parse(sessionStorage.getItem("data"));
- 
-     if(getdata != null){
-         return getdata;
-     }
-     return [];
- }
 
-function CommentSection() {
+function Form() {
 
-    const [inputList, setinputList] = useState({
-        fname: '',
-        lname: '',
-        cname: ''
+    const [inputValue, setInput] = useState({
+        name: "",
+        email: "",
+        password: "",
+        cource: ""
     });
 
-    const [viewData, setviewData] = useState(getData());
 
-    const handlechange = (e) => {
+
+    const [data, setData] = useState(getItem());
+    const [isUpdate, setIsUpdate] = useState(false);
+    const [isIndex, setIsIndex] = useState();
+
+
+
+
+    const handleChange = (e) => {
         let name = e.target.name;
-        let value = e.target.value
+        let value = e.target.value;
 
-        setinputList({ ...inputList, [name]: value })
-        // console.log("name",name);
+        setInput({ ...inputValue, [name]: value })
     }
+
+    // getItem();
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log("click");
 
-        let name = inputList
-        // console.log("name",name);
-        setviewData([...viewData, name]);
 
-        setinputList({
-            fname: '',
-            lname: '',
-            cname: ''
-        });
+        if (isUpdate) {
+            let newdata = [...data];
+            newdata[isIndex] = inputValue;
 
-        
+            setData(newdata);
+            setIsUpdate(false);
+            setIsIndex(null);
+        }
+        else {
+            let uid = data.length + 1;
+
+            let newInput = { id: uid, ...inputValue }
+
+            setData([...data, newInput]);
+
+        }
+
+        setInput({
+            name: "",
+            email: "",
+            password: "",
+            cource: ""
+        })
     }
 
-            // localStorage 
 
-    // useEffect(()=>{
-    //     localStorage.setItem("data",JSON.stringify(viewData));
-    //     console.log("hello");
-    // },[viewData])
+    const handleUpdate = (id, index) => {
+        let newdata = getItem();
 
-            // sessionStorage
 
-    useEffect(()=>{
-        sessionStorage.setItem("data",JSON.stringify(viewData));
-        console.log("hello");
-    },[viewData])
-    
+        let newItem = newdata.filter((d) => {
+            return d.id == id
+        }) 
+        setInput(newItem[0]);
+        setIsUpdate(true);
+        setIsIndex(index);
+
+
+    }
+
+    const handledelete = (id) => {
+        let newdelete = getItem();
+        let newItem = newdelete.filter((d) => {
+            return d.id != id
+        }) 
+
+        setData(newItem);
+
+    }
+
+
+
+
+
+    useEffect(() => {
+        localStorage.setItem("user", JSON.stringify(data));
+    }, [data])
+
+
     return (
         <>
-            <div className='container'>
-                <h1>
-                    CommentSection
-                </h1>
-                <form className="row g-3" onSubmit={handleSubmit}>
-                    <div className='col-md-6'>
-                        <label className="form-label">First Name</label>
-                        <input type="text" className="form-control" name='fname' value={inputList.fname} onChange={handlechange} />
-                    </div>
-                    <div className='col-md-6'>
-                        <label className="form-label">Last Name</label>
-                        <input type="text" className="form-control" name='lname' value={inputList.lname} onChange={handlechange} />
-                    </div>
-                    <div className="comment">
-                        <label className="form-label">Comments</label>
-                        <textarea className="form-control" placeholder="Comment here" name='cname' value={inputList.cname} onChange={handlechange}></textarea>
-                    </div>
-                    <div className="col-12">
-                        <button type="submit" className="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
 
-            <div className="container">
-                <div className="row">
-                    {
-                        viewData.length >= 1 ?
-                            viewData.map((d) => {
-                                // console.log(val);
-                                return (
-                                    <>
-                                        <div aria-live="polite" aria-atomic="true" className="d-flex justify-content-center align-items-center w-100">
 
-                                           
-                                            <div className="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                                <div className="toast-header">
-                                                        <strong className="me-auto">
-                                                            {
-                                                                d.fname + " "+ d.lname
-                                                            }
-                                                        </strong>
-                                                        <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                                </div>
-                                                <div className="toast-body">
-                                                    {
-                                                        d.cname
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </>
-                                )
-                            })
-                            : ""
-                    }
 
+            <body>
+                <div className="registration">
+                    <header>
+                        <h1 id="title">Student Registration</h1>
+                    </header>
+                    <form id="survey-form" onSubmit={handleSubmit}>
+                        <label id="name-label" className="top-label">Name: </label>
+                        <input className="top-input" type="text" name="name" placeholder="Enter your name" value={inputValue.name} onChange={handleChange}></input>
+
+                        <label id="email-label" className="top-label">Email: </label>
+                        <input className="top-input" type="text" name="email" placeholder="Enter your email" value={inputValue.email} onChange={handleChange} ></input>
+
+                        <label id="email-label" className="top-label">Password : </label>
+                        <input i className="top-input" type="text" name="password" placeholder="Enter your Password" value={inputValue.password} onChange={handleChange} ></input>
+
+                        <label id="email-label" className="top-label">Cource : </label>
+                        <input className="top-input" type="text" name="cource" placeholder="Enter your Cource" value={inputValue.cource} onChange={handleChange} ></input>
+
+                        <button type="submit" className="button">Submit</button>
+
+
+                    </form>
+
+
+                    <div className="table-container">
+
+                        <table className="table1">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Email</td>
+                                    <td>Password</td>
+                                    <td>Cource</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+
+                            {
+                                data.map((d, index) => {
+                                    return (
+                                        <>
+                                            <tbody className="tbody">
+
+                                                <tr>
+                                                    <td>{d.name}</td>
+                                                    <td>{d.email}</td>
+                                                    <td>{d.password}</td>
+                                                    <td>{d.cource}</td>
+                                                    <td>
+                                                        <button type="button" value="submit" onClick={(e) => handleUpdate(d.id, index)}>Update</button>
+                                                        <button type="button" value="submit" onClick={(e) => handledelete(d.id)}>Delete</button>
+
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+
+                                        </>
+                                    )
+                                })
+                            }
+                        </table>
+
+                    </div>
                 </div>
-            </div>
-        </>
 
+            </body>
+
+        </>
     )
 }
 
-export default CommentSection;
+export default Form
